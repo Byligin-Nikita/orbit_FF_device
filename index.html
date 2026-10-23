@@ -28,7 +28,9 @@
     var tg = window.Telegram && window.Telegram.WebApp;
     var status = document.getElementById("status");
     var hint = document.getElementById("hint");
-    if (!tg || !tg.initData) {
+    // Открыто кнопкой клавиатуры — initData у таких мини-приложений пустой по правилам Telegram,
+    // поэтому «внутри Telegram» определяем по платформе (в обычном браузере она "unknown")
+    if (!tg || !tg.platform || tg.platform === "unknown") {
       status.textContent = "Откройте эту страницу кнопкой «Определить устройство» в боте Orbit F&F.";
       hint.textContent = "";
       return;
