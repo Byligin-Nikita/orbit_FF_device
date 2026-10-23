@@ -46,6 +46,17 @@
       dpr: window.devicePixelRatio,
       tp: navigator.maxTouchPoints || 0
     };
+    // Возможности браузера, появившиеся в Safari/WebKit 26: на iOS 26+ версия в User-Agent «заморожена»
+    // на 18.x, и по ним видно, что система на самом деле 26 или новее
+    try {
+      var s = window.CSS && CSS.supports ? CSS.supports.bind(CSS) : function () { return false; };
+      data.fx = {
+        anchor: s("anchor-name: --a"),
+        sda: s("animation-timeline: scroll()"),
+        pretty: s("text-wrap-style: pretty"),
+        contrast: s("color: contrast-color(red)")
+      };
+    } catch (e) { /* без проверки — не страшно */ }
     if (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {
       try {
         var h = await navigator.userAgentData.getHighEntropyValues(["model", "platform", "platformVersion"]);
